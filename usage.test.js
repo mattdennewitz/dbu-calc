@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseUsage, summarizeUsage } from "./usage.js";
+import { parseUsage, summarizeUsage, breakdownUsage } from "./usage.js";
 import { toCsv } from "./scripts/openrouter-usage.mjs";
 const row = {
   date: "2026-09-30 00:00:00",
@@ -55,4 +55,66 @@ test("missing spend stays unknown, malformed counts are rejected", () => {
     () => parseUsage(JSON.stringify([{ ...row, prompt_tokens: -1 }])),
     /invalid prompt_tokens/,
   );
+});
+
+test("spend breakdown keeps provider/model pairs separate and includes free usage", () => {
+  const data = parseUsage(
+    JSON.stringify([
+      {
+        ...row,
+        provider_name: "OpenAI",
+        model: "openai/gpt",
+        spend_usd: 2,
+        requests: 3,
+      },
+      {
+        ...row,
+        provider_name: "OpenAI",
+        model: "openai/gpt",
+        spend_usd: 1,
+        requests: 2,
+      },
+      {
+        ...row,
+        provider_name: "Azure",
+        model: "openai/gpt",
+        spend_usd: 4,
+        requests: 1,
+      },
+      {
+        ...row,
+        provider_name: "DeepSeek",
+        model: "deepseek/model",
+        spend_usd: 0,
+        requests: 7,
+      },
+    ]),
+  );
+  const groups = breakdownUsage(data);
+  assert.deepEqual(
+    groups.map((g) => [g.provider, g.model, g.spend_usd, g.requests]),
+    [
+      ["Azure", "openai/gpt", 4, 1],
+      ["OpenAI", "openai/gpt", 3, 5],
+      ["DeepSeek", "deepseek/model", 0, 7],
+    ],
+  );
+  assert.equal(
+    groups.reduce((total, group) => total + group.spend_usd, 0),
+    summarizeUsage(data).spend,
+  );
+  assert.equal(groups[1].prompt_tokens, 2000);
+});
+
+test("unknown group spend cannot be misrepresented as a partial or zero total", () => {
+  const data = parseUsage(
+    JSON.stringify([
+      { ...row, provider_name: "OpenAI" },
+      { ...row, provider_name: "OpenAI", spend_usd: null, requests: null },
+    ]),
+  );
+  const [group] = breakdownUsage(data);
+  assert.equal(group.spend_usd, null);
+  assert.equal(group.requests, null);
+  assert.equal(group.prompt_tokens, 2000);
 });

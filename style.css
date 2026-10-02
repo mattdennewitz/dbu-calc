@@ -475,7 +475,7 @@ summary:focus-visible {
 }
 .usage-filters {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 16px;
   margin-top: 22px;
 }
@@ -541,4 +541,57 @@ summary:focus-visible {
   .usage-charts {
     grid-template-columns: 1fr;
   }
+}
+.usage-breakdown {
+  margin-top: 24px;
+}
+.usage-breakdown h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.usage-table-scroll {
+  overflow: auto;
+  max-height: 540px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-top: 14px;
+}
+.usage-table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.usage-table-scroll caption {
+  text-align: left;
+  padding: 12px;
+  color: var(--muted);
+}
+.usage-table-scroll th,
+.usage-table-scroll td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+.usage-table-scroll th:first-child,
+.usage-table-scroll td:first-child,
+.usage-table-scroll th:nth-child(2) {
+  text-align: left;
+}
+.usage-table-scroll thead th {
+  position: sticky;
+  top: 0;
+  background: #edf3e6;
+  z-index: 1;
+}
+.usage-table-scroll tbody th {
+  font-weight: 500;
+}
+.usage-table-scroll tfoot {
+  background: #edf3e6;
+  font-weight: 600;
+}
+.usage-table-scroll tbody tr:hover {
+  background: #f0f3ec;
 }

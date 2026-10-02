@@ -140,3 +140,40 @@ export function summarizeUsage(rows) {
     dates: [...new Set(rows.map((r) => r.date))].sort(),
   };
 }
+
+export function breakdownUsage(rows) {
+  const fields = [
+    "requests",
+    "prompt_tokens",
+    "completion_tokens",
+    "cached_tokens",
+    "spend_usd",
+    "byok_spend_usd",
+  ];
+  const groups = new Map();
+  for (const row of rows) {
+    const provider = row.provider_name || "Unknown provider";
+    const id = JSON.stringify([provider, row.model]);
+    let group = groups.get(id);
+    if (!group) {
+      group = {
+        provider,
+        model: row.model,
+        rows: 0,
+        ...Object.fromEntries(fields.map((field) => [field, 0])),
+      };
+      groups.set(id, group);
+    }
+    group.rows++;
+    for (const field of fields) {
+      if (row[field] == null) group[field] = null;
+      else if (group[field] != null) group[field] += row[field];
+    }
+  }
+  return [...groups.values()].sort(
+    (a, b) =>
+      (b.spend_usd ?? -1) - (a.spend_usd ?? -1) ||
+      a.provider.localeCompare(b.provider) ||
+      a.model.localeCompare(b.model),
+  );
+}

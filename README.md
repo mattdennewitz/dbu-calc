@@ -56,9 +56,11 @@ Exports include daily model/provider activity, key names/hashes, creator attribu
 ## Import and explore
 
 1. Choose the exported CSV or JSON in **Explore actual OpenRouter usage**.
-2. Filter by workspace, API key, key creator, model, and UTC date range. Charts and totals update together.
+2. Filter by workspace, API key, key creator, model, provider, and UTC date range. Charts, totals, and the complete provider/model spend breakdown update together.
 3. Click **Apply selected workload & actual spend**.
 4. Select Databricks target models and compare their estimated costs with actual OpenRouter credits spent.
+
+The spend breakdown lists every matching provider/model pair, including zero-spend usage, with requests, prompt/output/cache-read tokens, OpenRouter spend, spend share, and separate BYOK spend. Missing values remain unavailable. Scroll the table to see all rows and columns; it is separate from the single-target scenario cards.
 
 The selected period is compared as-is, not extrapolated to a month. All selected rows are combined into one workload and modeled on each selected target model; the calculator does not automatically map every source model to a Databricks equivalent. A single imported model selects its OpenRouter preset when an exact catalog match exists. Manual token edits or workload reset detach the actual-spend baseline.
 
