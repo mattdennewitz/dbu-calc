@@ -70,7 +70,7 @@ const state = {
 };
 const app = document.querySelector("#app");
 app.innerHTML = `
-  <header><a class="brand" href="/">TOKEN <span>→</span> DBU</a><span class="pill">WORKLOAD PRICING LAB</span></header>
+  <header><a class="brand" href="./">TOKEN <span>→</span> DBU</a><span class="pill">WORKLOAD PRICING LAB</span></header>
   <main>
     <section class="intro"><div class="eyebrow">ONE WORKLOAD. THREE WAYS TO SERVE IT.</div><h1>Tokens in.<br><span>Real costs out.</span></h1><p>Compare Databricks open-weight and commercial models with bring-your-own-key pricing. All estimates in USD, all rates visible.</p></section>
     <section id="usage-import" class="panel usage-import"></section>

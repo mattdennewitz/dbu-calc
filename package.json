@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
+    "build:static": "vite build --base=./",
     "preview": "vite preview --host 127.0.0.1",
     "openrouter:usage": "node scripts/openrouter-usage.mjs",
     "test:usage": "node --test scripts/openrouter-usage.test.mjs"
