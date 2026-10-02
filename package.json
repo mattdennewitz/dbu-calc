@@ -1,0 +1,19 @@
+{
+  "name": "dbu-cal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "openrouter:usage": "node scripts/openrouter-usage.mjs",
+    "test:usage": "node --test scripts/openrouter-usage.test.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
+  },
+  "dependencies": {
+    "@observablehq/plot": "^0.6.17"
+  }
+}
